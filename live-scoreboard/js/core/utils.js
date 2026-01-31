@@ -39,3 +39,10 @@ const Utils = (function () {
 
   return { uuid, deepMerge, isObject, nowTs };
 })();
+
+// Expose for non-module script consumers
+try {
+  window.Utils = window.Utils || Utils;
+} catch (e) {
+  // ignore (non-browser environments)
+}

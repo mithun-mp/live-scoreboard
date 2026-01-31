@@ -1,0 +1,96 @@
+body.setup-page {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #c0392b, #fff, #000);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 40px;
+}
+
+header img.logo {
+  width: 80px;
+  height: auto;
+}
+
+header h1 {
+  font-size: 2rem;
+}
+
+.setup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.team-setup {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
+
+.match-settings {
+  margin-bottom: 20px;
+}
+
+.match-settings input {
+  width: 100px;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+}
+
+.setup-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.setup-buttons button {
+  padding: 10px 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#saveSetupBtn {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+#saveSetupBtn:hover {
+  background-color: #2ecc71;
+}
+
+#startCountdownBtn {
+  background-color: #e67e22;
+  color: #fff;
+}
+
+#startCountdownBtn:hover {
+  background-color: #d35400;
+}

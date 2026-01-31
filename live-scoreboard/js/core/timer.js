@@ -1,13 +1,13 @@
-/* Timer helper and rAF renderer
-   - Computes elapsedMs using lastStartTs + offset safely
-   - Export a `createRenderer` that accepts:
-       - getTimerState() -> { running, elapsedMs, lastStartTs }
-       - onRender(visibleTimeText, ms) -> updates DOM (must be fast)
-   - Uses requestAnimationFrame for smooth updates and reduced layout thrashing
+/* Timer helper and renderer
+   - Supports adjustable match duration
+   - Handles added time
+   - Triggers milestones (halftime / fulltime)
+   - Smooth requestAnimationFrame updates
+   - Decoupled from UI: accepts callbacks
 */
 
-// Why separate: timer math often leaks into UI code. Separating ensures a deterministic render loop that can be shared by display and controller.
 const Timer = (function (Utils) {
+  // Format milliseconds to MM:SS
   function formatMs(ms) {
     const totalSeconds = Math.floor(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -15,32 +15,59 @@ const Timer = (function (Utils) {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
-  function createRenderer(getTimerState, onRender) {
-    if (typeof getTimerState !== 'function' || typeof onRender !== 'function') {
-      throw new Error('getTimerState and onRender required');
-    }
+  /**
+   * createRenderer
+   * @param {Function} getTimerState - returns { running, elapsedMs, lastStartTs }
+   * @param {Function} getRules - returns { baseDurationMs, addedTimeMs, period }
+   * @param {Function} onRender - callback(visibleTimeText, elapsedMs, targetMs)
+   * @param {Function} onMilestone - callback({ period, elapsedMs, targetMs })
+   */
+  function createRenderer({ getTimerState, getRules, onRender, onMilestone }) {
+    if (typeof getTimerState !== 'function') throw new Error('getTimerState required');
+    if (typeof getRules !== 'function') throw new Error('getRules required');
+    if (typeof onRender !== 'function') throw new Error('onRender required');
+
     let rafId = null;
     let lastRenderMs = 0;
+    let milestonesFired = new Set();
 
     function tick() {
-      const ts = Utils.nowTs();
-      const st = getTimerState();
-      // compute elapsed
-      let elapsed = st && typeof st.elapsedMs === 'number' ? st.elapsedMs : 0;
-      if (st && st.running && st.lastStartTs) {
-        elapsed = elapsed + (ts - st.lastStartTs);
+      const now = Utils.nowTs();
+      const timer = getTimerState();
+      const rules = getRules();
+
+      // Compute elapsed
+      let elapsed = timer.elapsedMs || 0;
+      if (timer.running && timer.lastStartTs) {
+        elapsed += now - timer.lastStartTs;
       }
-      // Avoid rendering more than ~30fps to save CPU on big displays
-      if (ts - lastRenderMs >= 33) {
-        lastRenderMs = ts;
-        onRender(formatMs(elapsed), elapsed);
+
+      // Total target duration (base + added)
+      const targetMs = (rules.baseDurationMs || 0) + (rules.addedTimeMs || 0);
+
+      // Trigger milestone if elapsed exceeds target
+      if (elapsed >= targetMs && !milestonesFired.has(rules.period)) {
+        milestonesFired.add(rules.period);
+        if (typeof onMilestone === 'function') {
+          onMilestone({
+            period: rules.period,
+            elapsedMs: elapsed,
+            targetMs
+          });
+        }
       }
+
+      // Throttle render (~30fps)
+      if (now - lastRenderMs >= 33) {
+        lastRenderMs = now;
+        onRender(formatMs(elapsed), elapsed, targetMs);
+      }
+
       rafId = window.requestAnimationFrame(tick);
     }
 
     function start() {
-      if (rafId) return;
-      rafId = window.requestAnimationFrame(tick);
+      if (!rafId) rafId = window.requestAnimationFrame(tick);
     }
 
     function stop() {
@@ -50,8 +77,19 @@ const Timer = (function (Utils) {
       }
     }
 
-    return { start, stop };
+    function resetMilestones() {
+      milestonesFired.clear();
+    }
+
+    return { start, stop, resetMilestones };
   }
 
   return { createRenderer };
 })(Utils);
+
+// Expose Timer for global access
+try {
+  window.Timer = window.Timer || Timer;
+} catch (e) {
+  /* noop */
+}

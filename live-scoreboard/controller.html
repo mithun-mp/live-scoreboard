@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Controller – Live Soccer Scoreboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Controller specific -->
+  <link rel="stylesheet" href="css/controller.css">
+</head>
+<body class="controller">
+
+  <header class="controller-header">
+    <h1>⚽ Live Soccer Scoreboard – Controller</h1>
+    <div class="display-status">
+      Connected Displays: <span data-bind="display-count">0</span>
+    </div>
+  </header>
+
+  <main class="controller-main">
+    <!-- Teams & Scores -->
+    <section class="teams-section">
+      <div class="team team-home">
+        <img id="logoHome" class="team-logo" alt="Home Logo">
+        <div class="team-name" data-bind="team-home-name">Home</div>
+        <div class="team-score" data-bind="score-home">0</div>
+        <button data-action="goal-home">+ Goal</button>
+      </div>
+
+      <div class="match-info">
+        <div class="period-info">
+          Period: <span data-bind="period">PRE_MATCH</span>
+        </div>
+        <div class="timer">
+          <span data-bind="timer">00:00</span>
+        </div>
+      </div>
+
+      <div class="team team-away">
+        <img id="logoAway" class="team-logo" alt="Away Logo">
+        <div class="team-name" data-bind="team-away-name">Away</div>
+        <div class="team-score" data-bind="score-away">0</div>
+        <button data-action="goal-away">+ Goal</button>
+      </div>
+    </section>
+
+    <!-- Match Controls -->
+    <section class="controls">
+      <h2>Match Controls</h2>
+
+      <div class="timer-controls">
+        <button data-action="start-timer">▶ Start Timer</button>
+        <button data-action="pause-timer">⏸ Pause Timer</button>
+        <button data-action="undo">↩ Undo Last Goal</button>
+      </div>
+
+      <div class="period-controls">
+        <button data-action="start-first-half">1️⃣ Start 1st Half</button>
+        <button data-action="half-time">⏸ Halftime</button>
+        <button data-action="start-second-half">2️⃣ Start 2nd Half</button>
+        <button data-action="end-match">🏁 Fulltime</button>
+        <button data-action="add-extra-time">+ Add Time</button>
+      </div>
+
+      <div class="substitution-controls">
+        <h3>Substitutions</h3>
+        <div class="team-sub">
+          <span>Home:</span>
+          <button data-action="sub-in-home">In</button>
+          <button data-action="sub-out-home">Out</button>
+        </div>
+        <div class="team-sub">
+          <span>Away:</span>
+          <button data-action="sub-in-away">In</button>
+          <button data-action="sub-out-away">Out</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Optional debug -->
+    <section class="debug-info">
+      <h3>Debug Info</h3>
+      <pre id="matchStateDebug"></pre>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/boot/init.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/matchState.js"></script>
+  <script src="js/core/sync.js"></script>
+  <script src="js/core/timer.js"></script>
+  <script src="js/ui/controller-ui.js"></script>
+
+  <!-- Load pre-match logos -->
+  <script>
+    (function(){
+      const qs = new URLSearchParams(location.search);
+      const matchId = qs.get('matchId') || 'local';
+      function loadLogo(key, imgEl){
+        try {
+          const dataUrl = localStorage.getItem(`${matchId}:${key}`);
+          if(dataUrl && imgEl) imgEl.src = dataUrl;
+        }catch(e){}
+      }
+      loadLogo('homeLogo', document.getElementById('logoHome'));
+      loadLogo('awayLogo', document.getElementById('logoAway'));
+    })();
+  </script>
+</body>
+</html>

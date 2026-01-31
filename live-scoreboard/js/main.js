@@ -1,12 +1,37 @@
 /* main.js
-   - Minimal entry point; preserved for future ES-module wiring.
-   - Current codebase uses globals (Utils, Sync, MatchState). This file provides
-   - a tiny App helper for templates and quick boot diagnostics.
+   - Global app context resolver
+   - Detects mode: landing | controller | display
+   - Exposes matchId safely
+   - Keeps feature modules isolated
 */
+
 (function () {
-  window.App = window.App || {};
-  window.App.genMatchId = function () {
-    if (window.Utils && typeof window.Utils.uuid === 'function') return window.Utils.uuid();
+  const qs = new URLSearchParams(window.location.search || '');
+
+  function detectMode() {
+    const path = window.location.pathname;
+
+    if (path.endsWith('display.html')) return 'display';
+    if (qs.has('matchId')) return 'controller';
+    return 'landing';
+  }
+
+  function genMatchId() {
+    if (window.Utils && typeof window.Utils.uuid === 'function') {
+      return window.Utils.uuid();
+    }
     return 'ms-' + Math.random().toString(36).slice(2, 10);
+  }
+
+  const mode = detectMode();
+  const matchId = qs.get('matchId');
+
+  window.App = {
+    mode,
+    matchId,
+    genMatchId
   };
+
+  // Debug aid (safe to keep)
+  console.info('[App]', { mode, matchId });
 })();

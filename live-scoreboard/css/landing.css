@@ -1,0 +1,102 @@
+/* ----- Landing Page Styles ----- */
+body.landing {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  position: relative;
+}
+
+header img.logo {
+  width: 120px;
+  height: auto;
+}
+
+.digital-clock {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: rgba(0,0,0,0.4);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+main.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  min-height: 80vh;
+  position: relative;
+}
+
+main h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+}
+
+.intro {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 10px 0 30px 0;
+}
+
+.help {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+  font-size: 1rem;
+}
+
+.help li {
+  margin: 10px 0;
+  position: relative;
+  padding-left: 25px;
+}
+
+.help li::before {
+  content: '✔';
+  position: absolute;
+  left: 0;
+  color: #00ff00;
+  font-weight: bold;
+}
+
+.primary-btn {
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background: #f39c12;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primary-btn:hover {
+  background: #e67e22;
+  transform: scale(1.05);
+}
+
+.soccer-animation {
+  position: absolute;
+  bottom: 20px;
+  width: 100px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-30px); }
+}

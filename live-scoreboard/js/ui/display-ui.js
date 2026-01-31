@@ -21,6 +21,9 @@
 
   let latestState = null;
 
+  // Presence ping interval id
+  let presenceInterval = null;
+
   // Efficient DOM updates: cache nodes and update textContent only when changed
   const dom = {
     homeName: document.querySelector('[data-bind="team-home-name"]'),
@@ -58,7 +61,50 @@
 
   // Start renderer when loaded
   document.addEventListener('DOMContentLoaded', () => {
+    // Attempt to recover last persisted authoritative snapshot so late-joining displays show current state.
+    try {
+      const persistKey = `live-scoreboard:${matchId}:snapshot`;
+      const raw = localStorage.getItem(persistKey);
+      if (raw) {
+        const snap = JSON.parse(raw);
+        if (snap && typeof snap === 'object') {
+          applyState(snap);
+        }
+      }
+    } catch (e) {
+      // ignore parsing/storage errors; continue with blank state
+    }
+
+    // Start periodic presence broadcasts so controllers can detect connected displays.
+    try {
+      // send an immediate presence message and then start interval
+      if (sync && typeof sync.broadcast === 'function') {
+        sync.broadcast({ type: 'presence', payload: { status: 'online' }, ts: Utils.nowTs() });
+        presenceInterval = setInterval(() => {
+          try {
+            sync.broadcast({ type: 'presence', payload: { status: 'online' }, ts: Utils.nowTs() });
+          } catch (e) {
+            /* ignore */
+          }
+        }, 5000);
+      }
+    } catch (e) {
+      /* ignore presence setup errors */
+    }
+
     timerRenderer.start();
+  });
+
+  // Clean up on unload: attempt to notify controllers we're going offline
+  window.addEventListener('beforeunload', () => {
+    try {
+      if (presenceInterval) clearInterval(presenceInterval);
+      if (sync && typeof sync.broadcast === 'function') {
+        sync.broadcast({ type: 'presence', payload: { status: 'offline' }, ts: Utils.nowTs() });
+      }
+    } catch (e) {
+      /* noop */
+    }
   });
 
   // Listen for sync events from controller

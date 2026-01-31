@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Controller</title>
+  <meta charset="UTF-8">
+  <title>Live Soccer Scoreboard – Landing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Landing CSS -->
+  <link rel="stylesheet" href="css/landing.css">
 </head>
-<body>
-  <h2>Controller Screen Loaded</h2>
-  <script type="module" src="js/main.js"></script>
+<body class="landing">
+
+  <!-- Header with tournament logo and clock -->
+  <header>
+    <img src="assets/logos/tournament.png" alt="Tournament Logo" class="logo">
+    <div class="digital-clock" id="digitalClock">00:00:00</div>
+  </header>
+
+  <!-- Landing Content -->
+  <main class="landing-container" data-area="landing">
+    <h1>⚽ Live Soccer Scoreboard</h1>
+    <p class="intro">
+      Control live matches, display scores on a large screen, and manage events in real-time.
+    </p>
+
+    <ul class="help">
+      <li>Private controller screen</li>
+      <li>External scoreboard display</li>
+      <li>Offline functionality after load</li>
+      <li>Simple and intuitive interface</li>
+    </ul>
+
+    <button class="primary-btn" data-action="create-match">➕ Setup New Match</button>
+
+    <!-- Soccer animation -->
+    <img src="assets/logos/soccer-ball.png" class="soccer-animation" alt="Soccer Ball">
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/landing-ui.js"></script>
+  <script src="js/landing.js"></script>
 </body>
 </html>

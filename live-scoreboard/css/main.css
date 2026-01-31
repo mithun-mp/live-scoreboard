@@ -1,0 +1,77 @@
+/* ===== Landing Page ===== */
+
+body.landing {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.landing-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.landing-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  opacity: 0.8;
+  font-size: 1.1rem;
+}
+
+.landing-info {
+  margin: 40px 0;
+  text-align: left;
+}
+
+.landing-info h2 {
+  margin-bottom: 15px;
+}
+
+.landing-info ol {
+  line-height: 1.8;
+}
+
+.landing-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 40px 0;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 15px 30px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: #00c853;
+  color: #000;
+}
+
+.secondary-btn {
+  background: #ffffff;
+  color: #000;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+  transform: translateY(-2px);
+}
+
+.landing-footer {
+  margin-top: 40px;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}

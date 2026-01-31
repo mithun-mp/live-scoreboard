@@ -1,30 +1,22 @@
-/* landing-ui.js
-   - Renders operator help content into the landing area
-   - Keeps help text concise and keyboard shortcuts visible
-*/
-(function () {
-  function getHelpHtml() {
-    return "<h2>Live Scoreboard - Operator Help</h2>" +
-      "<p>Use this page to create and control a live match. Once created, the controller view will appear.</p>" +
-      "<h3>Keyboard Shortcuts</h3>" +
-      "<ul>" +
-      "<li><strong>Space</strong>: Toggle timer (start/pause)</li>" +
-      "<li><strong>G</strong>: Add goal (home)</li>" +
-      "<li><strong>H</strong>: Add goal (away)</li>" +
-      "<li><strong>Z</strong>: Undo last goal</li>" +
-      "</ul>" +
-      "<h3>Notes</h3>" +
-      "<ul>" +
-      "<li>The controller is the single source of truth; do not open multiple controllers during a match unless intentionally recovering state.</li>" +
-      "<li>Display screens are read-only and will automatically update.</li>" +
-      "</ul>";
-  }
+// Digital clock
+function updateClock() {
+  const now = new Date();
+  const clock = document.getElementById('digitalClock');
+  if (!clock) return;
+  clock.textContent = now.toLocaleTimeString();
+}
 
-  function render() {
-    const container = document.querySelector('[data-area="help"]');
-    if (!container) return;
-    container.innerHTML = getHelpHtml();
-  }
+setInterval(updateClock, 1000);
+updateClock();
 
-  document.addEventListener('DOMContentLoaded', render);
-})();
+// Setup new match button
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('[data-action="create-match"]');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const matchId = 'match-' + Date.now();
+    // Redirect to setup page with matchId
+    window.location.href = `setup.html?matchId=${matchId}`;
+  });
+});

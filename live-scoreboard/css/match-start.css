@@ -1,0 +1,169 @@
+/* ================= RESET ================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+/* ================= BODY ================= */
+body {
+  background:
+    radial-gradient(circle at top, rgba(40,40,40,0.9) 0%, #000 70%),
+    linear-gradient(180deg, #0b0b0b, #000);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ================= ROOT ================= */
+.match-start-container {
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ================= HEADER TEXT ================= */
+.match-text {
+  font-size: clamp(2.5rem, 5vmin, 4rem);
+  margin-bottom: 6vh;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* ================= TEAMS ================= */
+.teams-preview {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10vmin;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.team-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3vmin 3.5vmin;
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.015)
+  );
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.team-preview img {
+  width: clamp(160px, 16vmin, 260px);
+  height: auto;
+  margin-bottom: 2vmin;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 18px 30px rgba(0,0,0,0.9))
+    drop-shadow(0 0 12px rgba(255,255,255,0.1));
+}
+
+.team-preview div {
+  font-size: clamp(1.8rem, 3.5vmin, 3rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 8px rgba(0,0,0,0.7);
+}
+
+/* ================= VS ================= */
+.vs-text {
+  font-size: clamp(3rem, 5vmin, 5rem);
+  font-weight: 900;
+  color: #ffcc66;
+  opacity: 0.85;
+  text-shadow:
+    0 0 18px rgba(255,200,100,0.3),
+    0 6px 18px rgba(0,0,0,0.85);
+}
+
+/* ================= COUNTDOWN ================= */
+.countdown {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(8rem, 20vmin, 18rem);
+  font-weight: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.85);
+  color: #ff3b3b;
+  text-shadow:
+    0 0 35px rgba(255,60,60,0.6),
+    0 12px 40px rgba(0,0,0,1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ================= STATES ================= */
+.state-idle .match-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.state-ready .teams-preview {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.state-countdown .match-text,
+.state-countdown .teams-preview {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.state-countdown .countdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* ================= ANIMATION ================= */
+.countdown.tick {
+  animation: pop 0.28s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .teams-preview {
+    flex-direction: column;
+    gap: 6vmin;
+  }
+}

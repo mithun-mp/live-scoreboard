@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Match Status – Live Soccer Scoreboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Match Status specific -->
+  <link rel="stylesheet" href="css/match-status.css">
+</head>
+<body class="match-status-page">
+
+  <header class="status-header">
+    <h1>⚽ Live Match Status</h1>
+    <div class="status-info">
+     <span id="period">PRE_MATCH</span>
+    Timer: <span id="timer">00:00</span>
+    </div>
+  </header>
+
+  <main class="status-main">
+    <section class="teams-display">
+      <div class="team team-home">
+        <img id="teamAImg" class="team-logo" alt="Team A Logo">
+        <div id="teamAName">Team A</div>
+        <div id="scoreHome" class="team-score">0</div>
+      </div>
+
+      <div class="vs-text">VS</div>
+
+      <div class="team team-away">
+        <img id="teamBImg" class="team-logo" alt="Team B Logo">
+        <div id="teamBName">Team B</div>
+        <div id="scoreAway" class="team-score">0</div>
+      </div>
+    </section>
+
+    <section class="extra-info">
+      <div>Extra Time: <span id="extraTime">0</span> min</div>
+    </section>
+  </main>
+
+  <script src="js/match-status.js"></script>
+</body>
+</html>

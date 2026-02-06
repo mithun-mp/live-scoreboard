@@ -1,0 +1,251 @@
+/* ===================== RESET & BASE ===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0a0f;
+  color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ===================== GLOW BACKGROUND ===================== */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 31, 60, 0.08), transparent 60%),
+              radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.04), transparent 60%);
+  z-index: -2;
+  pointer-events: none;
+  animation: glowMove 25s linear infinite;
+}
+
+@keyframes glowMove {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(25px, -15px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* ===================== BACKGROUND LOGO OVERLAY ===================== */
+.landing-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 70%;
+  background: url('../assets/logos/tournament.png') no-repeat center center;
+  background-size: contain;
+  opacity: 0.08; /* subtle overlay */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ===================== HEADER ===================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid #222;
+  background-color: #0f0f17;
+  z-index: 2;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.tournament-logo {
+  width: 80px; /* slightly bigger */
+  height: 80px;
+  border-radius: 12px;
+  border: 2px solid #ff1f3c;
+}
+
+.tournament-name {
+  font-weight: 800;
+  font-size: 1.7rem;
+  color: #ff1f3c;
+  text-shadow: 0 0 6px rgba(255, 31, 60, 0.5);
+}
+
+.digital-clock {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 18px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+}
+
+/* ===================== LANDING ===================== */
+.landing-container {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px 40px 20px;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.intro-section h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #ff1f3c;
+  margin-bottom: 12px;
+  text-shadow: 0 0 8px rgba(255, 31, 60, 0.25);
+}
+
+.intro-section .intro {
+  font-size: 1.15rem;
+  color: #ddd;
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+/* ===================== FEATURE CARDS ===================== */
+.feature-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.card {
+  background-color: #12121b;
+  border: 1px solid #222;
+  border-radius: 18px;
+  padding: 22px 20px;
+  flex: 1 1 220px;
+  max-width: 260px;
+  transition: all 0.35s ease;
+  cursor: pointer;
+}
+
+.card h3 {
+  color: #ff1f3c;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: #ff1f3c;
+  box-shadow: 0 12px 28px rgba(255, 31, 60, 0.3);
+}
+
+/* ===================== UPCOMING MATCH ===================== */
+.upcoming-match {
+  margin-top: 45px;
+  text-align: center;
+}
+
+.upcoming-match h2 {
+  font-size: 2rem;
+  color: #ff1f3c;
+  margin-bottom: 18px;
+}
+
+.match-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.team img {
+  width: 75px;
+  height: 75px;
+  border-radius: 10px;
+}
+
+.vs {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.match-time {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #ccc;
+}
+
+/* ===================== BUTTON ===================== */
+.primary-btn {
+  background: linear-gradient(90deg, #ff1f3c, #ff4b5c);
+  color: #fff;
+  font-weight: 700;
+  padding: 18px 44px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primary-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 14px 32px rgba(255, 31, 60, 0.5);
+}
+
+/* ===================== FOOTER ===================== */
+.footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+  padding: 8px 0;
+  border-top: 1px solid #222;
+  margin-top: auto; /* push footer to bottom */
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 992px) {
+  .intro-section h1 { font-size: 2.5rem; }
+  .feature-cards { gap: 15px; }
+}
+
+@media (max-width: 768px) {
+  .intro-section h1 { font-size: 2rem; }
+  .intro-section .intro { font-size: 1rem; }
+  .feature-cards { flex-direction: column; align-items: center; }
+  .match-info { flex-direction: column; gap: 20px; }
+}

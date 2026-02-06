@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Match Starting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/match-start.css" />
+</head>
+
+<body class="state-idle">
+
+  <main class="match-start-container">
+
+    <!-- STAGE TEXT -->
+    <h1 id="matchText" class="match-text">
+      The match will start soon
+    </h1>
+
+    <!-- TEAMS -->
+    <div class="teams-preview">
+      <div class="team-preview">
+        <img id="teamAImg" />
+        <div id="teamAName"></div>
+      </div>
+
+      <div class="vs-text">VS</div>
+
+      <div class="team-preview">
+        <img id="teamBImg" />
+        <div id="teamBName"></div>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div id="countdown" class="countdown"></div>
+
+  </main>
+
+  <script src="js/match-start-ui.js"></script>
+</body>
+</html>

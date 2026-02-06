@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Match Setup – Live Soccer Scoreboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/setup1.css">
+</head>
+<body class="setup-page">
+
+  <!-- Background tournament underlay -->
+  <div class="bg-logo"></div>
+
+  <!-- Tournament header -->
+  <header class="setup-header">
+    <img src="assets/logos/tournament.png" alt="Tournament Logo" class="logo">
+    <h1>Tournament Match Setup</h1>
+    <p class="subtitle">Configure teams & match settings</p>
+  </header>
+
+  <main class="setup-container">
+
+    <!-- Team setup -->
+    <section class="team-setup">
+
+      <div class="team-card">
+        <h2>Team A</h2>
+        <input type="text" id="teamAName" placeholder="Enter Team A Name" value="Team A">
+        <input type="file" id="teamALogo" accept="image/*">
+        <img id="teamALogoPreview" class="logo-preview" alt="Team A Logo Preview">
+      </div>
+
+      <div class="team-card">
+        <h2>Team B</h2>
+        <input type="text" id="teamBName" placeholder="Enter Team B Name" value="Team B">
+        <input type="file" id="teamBLogo" accept="image/*">
+        <img id="teamBLogoPreview" class="logo-preview" alt="Team B Logo Preview">
+      </div>
+
+    </section>
+
+    <!-- Match settings -->
+    <section class="match-settings">
+      <label>
+        Match Duration (minutes)
+        <input type="number" id="matchDuration" min="10" max="90" value="90">
+      </label>
+    </section>
+
+    <!-- Buttons -->
+    <section class="setup-buttons">
+      <button id="saveSetupBtn" class="secondary">Save Setup</button>
+      <button id="startCountdownBtn" class="primary">Start Countdown</button>
+      <button id="openScreenBtn" class="secondary">Open Match Screen</button>
+    </section>
+
+  </main>
+
+  <script src="js/setup-ui.js"></script>
+</body>
+</html>

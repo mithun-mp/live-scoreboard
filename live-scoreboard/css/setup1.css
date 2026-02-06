@@ -1,0 +1,197 @@
+/* ===== Base ===== */
+* {
+  box-sizing: border-box;
+}
+
+body.setup-page {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(0, 140, 255, 0.15), transparent 45%),
+    radial-gradient(circle at bottom, rgba(0, 255, 200, 0.08), transparent 50%),
+    linear-gradient(180deg, #070c16, #02040a);
+  color: #eaf1ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ===== Background tournament logo underlay ===== */
+.bg-logo {
+  position: fixed;
+  inset: 0;
+  background: url("../assets/logos/tournament.png") center/55% no-repeat;
+  opacity: 0.05;
+  filter: grayscale(100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== Header ===== */
+.setup-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 20px 10px 10px;
+}
+
+.setup-header .logo {
+  width: 120px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 14px rgba(0, 150, 255, 0.4));
+}
+
+.setup-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.6px;
+}
+
+.setup-header .subtitle {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* ===== Main container ===== */
+.setup-container {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 95%);
+  background: rgba(14, 22, 38, 0.88);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+/* ===== Team setup ===== */
+.team-setup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.team-card {
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 20px rgba(0, 140, 255, 0.08);
+}
+
+.team-card h2 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+  letter-spacing: 0.4px;
+}
+
+/* ===== Inputs ===== */
+.team-card input[type="text"],
+.team-card input[type="number"],
+.match-settings input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0b1424;
+  color: #ffffff;
+  outline: none;
+}
+
+.team-card input::placeholder {
+  color: rgba(200, 220, 255, 0.45);
+}
+
+.team-card input[type="file"] {
+  width: 100%;
+  margin-bottom: 10px;
+  color: #cfe4ff;
+}
+
+/* ===== Logo preview ===== */
+.logo-preview {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin: 10px auto 0;
+  display: block;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgba(0, 140, 255, 0.25));
+}
+
+/* ===== Match settings ===== */
+.match-settings {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.match-settings label {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.match-settings input {
+  margin-top: 6px;
+  width: 120px;
+  text-align: center;
+}
+
+/* ===== Buttons ===== */
+.setup-buttons {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.setup-buttons button {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Primary button */
+.setup-buttons .primary {
+  background: linear-gradient(135deg, #1aa3ff, #0066ff);
+  color: #fff;
+  box-shadow:
+    0 0 18px rgba(0, 140, 255, 0.45),
+    0 6px 22px rgba(0, 0, 0, 0.6);
+}
+
+.setup-buttons .primary:hover {
+  transform: translateY(-1px);
+}
+
+/* Secondary button */
+.setup-buttons .secondary {
+  background: #141f33;
+  color: #cfe4ff;
+}
+
+.setup-buttons .secondary:hover {
+  background: #1b2a45;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 720px) {
+  .team-setup {
+    grid-template-columns: 1fr;
+  }
+
+  .setup-header h1 {
+    font-size: 1.55rem;
+  }
+}

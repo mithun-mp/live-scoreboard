@@ -73,7 +73,23 @@
   if (openDisplayBtn) {
     openDisplayBtn.addEventListener('click', () => {
       if (!App || !App.matchId) return;
-      window.open(`display.html?matchId=${App.matchId}`, '_blank', 'width=1280,height=720');
+      const id = App.matchId;
+      let home = 'Team A';
+      let away = 'Team B';
+      let duration = 90;
+      let logoA = '';
+      let logoB = '';
+      try {
+        const setupRaw = localStorage.getItem(`${id}:setup`);
+        const setup = setupRaw ? JSON.parse(setupRaw) : {};
+        home = setup?.teamA?.name || home;
+        away = setup?.teamB?.name || away;
+        duration = setup?.matchDuration || duration;
+        logoA = localStorage.getItem(`${id}:homeLogo`) || '';
+        logoB = localStorage.getItem(`${id}:awayLogo`) || '';
+      } catch {}
+      const url = `match-status.html?matchId=${encodeURIComponent(id)}&home=${encodeURIComponent(home)}&away=${encodeURIComponent(away)}&duration=${encodeURIComponent(duration)}&logoA=${encodeURIComponent(logoA)}&logoB=${encodeURIComponent(logoB)}`;
+      window.open(url, '_blank', 'width=1280,height=720');
     });
   }
 

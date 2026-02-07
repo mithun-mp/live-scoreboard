@@ -1,12 +1,28 @@
 /* =========================
-   CONTROLLER BASE
+   CONTROLLER BASE ("WEAPON" STYLE)
 ========================= */
 
 body.controller {
   margin: 0;
-  background: #0e0f13;
-  color: #fff;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #050505; /* Deep Black */
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+  height: 100vh;
+  overflow: auto; /* Allow scroll to view debug */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Watermark */
+body.controller::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("../assets/logos/tournament.png") center/40% no-repeat;
+  opacity: 0.03;
+  filter: grayscale(100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* =========================
@@ -14,22 +30,38 @@ body.controller {
 ========================= */
 
 .controller-header {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 2.5rem;
-  background: #16181f;
-  border-bottom: 1px solid #2a2d36;
+  padding: 0.8rem 2rem;
+  background: #0f0f0f;
+  border-bottom: 1px solid #333;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  z-index: 10;
 }
 
 .controller-header h1 {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   margin: 0;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #fff, #777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .display-status {
-  font-size: 1rem;
-  opacity: 0.9;
+  font-size: 0.9rem;
+  color: #0f0;
+  font-family: monospace;
+  background: #000;
+  padding: 4px 10px;
+  border: 1px solid #111;
+  border-radius: 4px;
+  box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.2);
 }
 
 /* =========================
@@ -37,9 +69,16 @@ body.controller {
 ========================= */
 
 .controller-main {
-  padding: 2rem;
-  max-width: 1600px;
-  margin: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem;
+  gap: 1rem;
+  overflow-y: visible;
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* =========================
@@ -47,154 +86,385 @@ body.controller {
 ========================= */
 
 .scoreboard-panel {
+  flex-shrink: 0;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 3rem;
+  gap: 2rem;
   align-items: center;
-  margin-bottom: 3rem;
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+.scoreboard-panel::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, #444, transparent);
 }
 
 .team-panel {
-  background: #1b1e27;
-  border-radius: 14px;
-  padding: 2rem;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 6px;
+  padding: 1rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Logo Styling */
+.logo-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.5rem;
 }
 
 .team-logo {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  margin-bottom: 1rem;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Keeps aspect ratio inside box */
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 60%, transparent 80%);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.12));
+}
+
+.view-logo {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  font-size: 12px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.view-logo:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
 }
 
 .team-name {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
 }
 
 .team-score {
-  font-size: 4rem;
-  font-weight: 800;
-  margin: 0.5rem 0 1rem;
+  font-size: 5rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  background: #000;
+  padding: 0 20px;
+  border-radius: 4px;
+  border: 1px solid #222;
+  min-width: 100px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+.team-panel.home .team-score { color: #4dabf7; text-shadow: 0 0 15px rgba(77, 171, 247, 0.4); }
+.team-panel.away .team-score { color: #ff8787; text-shadow: 0 0 15px rgba(255, 135, 135, 0.4); }
+
 /* =========================
-   CENTER PANEL
+   CENTER PANEL (TIMER)
 ========================= */
 
 .center-panel {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .center-panel .period {
-  font-size: 1.3rem;
-  opacity: 0.85;
+  font-size: 1rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.timer-container {
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px 25px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .center-panel .timer {
-  font-size: 3.5rem;
+  font-size: 4rem;
   font-weight: 700;
-  margin-top: 0.5rem;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-button {
-  padding: 0.7rem 1.3rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  background: #2d72ff;
   color: #fff;
-  transition: 0.2s ease;
+  font-family: monospace;
+  letter-spacing: 2px;
 }
 
-button:hover {
-  background: #4a8bff;
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-button.goal {
-  font-size: 1.1rem;
-  font-weight: 600;
+.center-panel .extra-time {
+  font-size: 1.5rem;
+  color: #ffd43b;
+  font-weight: 700;
+  font-family: monospace;
 }
 
 /* =========================
-   CONTROLS GRID
+   CONTROLS GRID ("WEAPON" STYLE)
 ========================= */
 
 .controls-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* Force 3 columns */
   gap: 1.5rem;
+  flex: 1;
 }
 
 .control-card {
-  background: #1b1e27;
-  padding: 1.5rem;
-  border-radius: 12px;
+  background: #0e0e0e;
+  border: 1px solid #1f1f1f;
+  border-radius: 6px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  position: relative;
 }
 
+/* Header "Tag" */
 .control-card h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  margin: 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #555;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #1a1a1a;
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.control-card button {
-  width: 100%;
-  margin-bottom: 0.6rem;
+.control-card h3::after {
+  content: "///";
+  color: #222;
+  letter-spacing: -2px;
 }
 
-/* =========================
-   SUBSTITUTIONS
-========================= */
+/* TACTICAL BUTTONS */
+button {
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 2px; /* Sharper edges */
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  background: #222;
+  color: #ccc;
+}
 
+button:hover {
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Button Variants */
+
+/* START / GOAL (Positive/Action) - Dark Green/Tech */
+button[data-action^="start"], button[data-action^="goal"] {
+  background: linear-gradient(180deg, #121412 0%, #0a1f0a 100%);
+  border: 1px solid #1e3a1e;
+  color: #40c057; /* Neon Green Text */
+  box-shadow: inset 0 0 10px rgba(64, 192, 87, 0.1);
+}
+button[data-action^="start"]:hover, button[data-action^="goal"]:hover {
+  border-color: #40c057;
+  box-shadow: 0 0 10px rgba(64, 192, 87, 0.2);
+}
+
+/* STOP / PERIODS (Caution/State) - Dark Orange/Industrial */
+button[data-action="pause-timer"], button[data-action="half-time"], button[data-action="end-match"] {
+  background: linear-gradient(180deg, #1a1410 0%, #2e1f0a 100%);
+  border: 1px solid #4d3319;
+  color: #ff922b; /* Neon Orange */
+}
+button[data-action="pause-timer"]:hover, button[data-action="half-time"]:hover {
+  border-color: #ff922b;
+  box-shadow: 0 0 10px rgba(255, 146, 43, 0.2);
+}
+
+/* UNDO / SECONDARY - Muted Gray/Stealth */
+button[data-action^="undo"] {
+  background: #111;
+  border: 1px solid #333;
+  color: #666;
+  font-size: 0.8rem;
+  padding: 8px 12px;
+}
+button[data-action^="undo"]:hover {
+  border-color: #888;
+  color: #fff;
+}
+
+/* TEAMS (Home/Away) - Tactical Blue / Red */
+button[data-action="sub-home"] {
+  background: linear-gradient(180deg, #0a101a 0%, #0a182e 100%);
+  border: 1px solid #19334d;
+  color: #4dabf7;
+}
+button[data-action="sub-away"] {
+  background: linear-gradient(180deg, #1a0a0a 0%, #2e0a0a 100%);
+  border: 1px solid #4d1919;
+  color: #ff8787;
+}
+
+/* EXTRA TIME - Alert Red */
+button[data-action="add-extra-time"] {
+  background: #200505;
+  border: 1px dashed #ff6b6b;
+  color: #ff6b6b;
+}
+
+/* Sub Rows */
 .sub-row {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.6rem;
+  background: #000;
+  padding: 8px 12px;
+  border: 1px solid #222;
+  border-left: 3px solid #444;
+  margin-bottom: 5px;
 }
 
 .sub-row span {
-  flex: 1;
-  font-weight: 600;
+  font-weight: 700;
+  color: #aaa;
 }
 
 /* =========================
-   DEBUG
+   DEBUG PANEL (Collapsible)
 ========================= */
 
 .debug-panel {
-  margin-top: 3rem;
-  background: #0a0c10;
-  border: 1px solid #2a2d36;
-  padding: 1rem;
-  border-radius: 8px;
+  position: static;
+  background: #080808;
+  border-top: 1px solid #333;
 }
 
-.debug-panel pre {
+.debug-panel.collapsed .debug-content {
+  display: none;
+}
+
+.debug-header {
+  padding: 10px 20px;
+  background: #111;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #222;
+}
+
+.debug-header h3 {
   margin: 0;
-  font-size: 0.85rem;
-  color: #7dff7d;
-  overflow-x: auto;
+  font-size: 0.9rem;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.toggle-icon {
+  color: #666;
+  font-size: 0.8rem;
+  transition: transform 0.3s;
+}
+
+.debug-panel.collapsed .toggle-icon {
+  transform: rotate(0deg);
+}
+.debug-panel:not(.collapsed) .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.debug-content {
+  padding: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.debug-content pre {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #0f0;
+  font-family: 'Consolas', monospace;
 }
 
 /* =========================
-   RESPONSIVE
+   INFO BUTTON
 ========================= */
+.info-btn {
+  position: fixed;
+  bottom: 50px; /* Above Debug */
+  right: 30px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px; /* Square/Tech */
+  background: #333;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: 1px solid #555;
+  cursor: pointer;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
 
-@media (max-width: 900px) {
-  .scoreboard-panel {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
+.info-btn:hover {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255,255,255,0.5);
+}
+
+/* Modal adjustments same as before but dark theme compatible */
+.modal-overlay {
+  background: rgba(0,0,0,0.9);
+}
+.modal-content {
+  background: #111;
+  border: 1px solid #333;
+  color: #ccc;
 }

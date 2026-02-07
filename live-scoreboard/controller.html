@@ -28,8 +28,11 @@
     <section class="scoreboard-panel">
 
       <div class="team-panel home">
-        <img id="logoHome" class="team-logo" alt="Home Logo" />
-        <div class="team-name" data-bind="team-home-name">Home</div>
+        <div class="logo-wrapper">
+           <img id="logoHome" class="team-logo" alt="Home Logo" />
+           <button class="btn-icon view-logo" data-action="view-logo-home">👁️</button>
+        </div>
+        <div class="team-name" data-bind="team-home-name"></div>
         <div class="team-score" data-bind="score-home">0</div>
         <button class="btn goal" data-action="goal-home">+ Goal</button>
       </div>
@@ -38,12 +41,18 @@
         <div class="period">
           <span data-bind="period">PRE_MATCH</span>
         </div>
-        <div class="timer" data-bind="timer">00:00</div>
+        <div class="timer-container">
+           <div class="timer" data-bind="timer">00:00</div>
+           <div class="extra-time" data-bind="extra-time"></div>
+        </div>
       </div>
 
       <div class="team-panel away">
-        <img id="logoAway" class="team-logo" alt="Away Logo" />
-        <div class="team-name" data-bind="team-away-name">Away</div>
+        <div class="logo-wrapper">
+           <img id="logoAway" class="team-logo" alt="Away Logo" />
+           <button class="btn-icon view-logo" data-action="view-logo-away">👁️</button>
+        </div>
+        <div class="team-name" data-bind="team-away-name"></div>
         <div class="team-score" data-bind="score-away">0</div>
         <button class="btn goal" data-action="goal-away">+ Goal</button>
       </div>
@@ -69,29 +78,34 @@
         <button data-action="start-second-half">2nd Half</button>
         <button data-action="end-match">Fulltime</button>
         <button data-action="add-extra-time">+ Extra Time</button>
+        <button data-action="undo-period" class="btn-secondary">↩ Undo</button>
       </div>
 
       <!-- SUBSTITUTIONS -->
       <div class="control-card">
         <h3>Substitutions</h3>
         <div class="sub-row">
-          <span>Home</span>
-          <button data-action="sub-in-home">In</button>
-          <button data-action="sub-out-home">Out</button>
+          <span data-bind="team-home-name"></span>
+          <button data-action="sub-home">🔄 Sub</button>
         </div>
         <div class="sub-row">
-          <span>Away</span>
-          <button data-action="sub-in-away">In</button>
-          <button data-action="sub-out-away">Out</button>
+          <span data-bind="team-away-name"></span>
+          <button data-action="sub-away">🔄 Sub</button>
         </div>
+        <button data-action="undo-sub">↩ Undo Sub</button>
       </div>
 
     </section>
 
     <!-- DEBUG -->
-    <section class="debug-panel">
-      <h3>Debug State</h3>
-      <pre id="matchStateDebug"></pre>
+    <section class="debug-panel collapsed" id="debugPanel">
+      <div class="debug-header" id="toggleDebug">
+        <h3>🔧 Debug Console (Click to Expand)</h3>
+        <span class="toggle-icon">▲</span>
+      </div>
+      <div class="debug-content">
+        <pre id="matchStateDebug"></pre>
+      </div>
     </section>
 
   </main>
@@ -104,6 +118,26 @@
   <script src="js/timer.js"></script>
   <script src="js/controller-ui.js"></script>
 
+  <!-- Info Button -->
+  <button id="infoBtn" class="info-btn">i</button>
+  
+  <!-- Info Modal -->
+  <div id="infoModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-modal" id="closeModal">&times;</button>
+      <div class="instructions-body">
+        <h2>Controller Guide</h2>
+        <ul>
+          <li><strong>Start/Pause:</strong> Control the match timer.</li>
+          <li><strong>Periods:</strong> Switch between halves.</li>
+          <li><strong>Goals:</strong> Add goals for teams (auto-undo supported).</li>
+          <li><strong>Subs:</strong> Manage player substitutions.</li>
+          <li><strong>Extra Time:</strong> Add time at end of periods.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <!-- LOAD LOGOS -->
   <script>
     (function () {
@@ -112,13 +146,21 @@
 
       function loadLogo(key, el) {
         try {
-          const img = localStorage.getItem(`${matchId}:${key}`);
+          const img = (key === 'homeLogo' ? qs.get('logoA') : qs.get('logoB')) || localStorage.getItem(`${matchId}:${key}`);
           if (img && el) el.src = img;
         } catch (e) {}
       }
 
       loadLogo("homeLogo", document.getElementById("logoHome"));
       loadLogo("awayLogo", document.getElementById("logoAway"));
+
+      try {
+        const setup = JSON.parse(localStorage.getItem(`${matchId}:setup`)) || {};
+        const nameA = setup.teamA && setup.teamA.name ? setup.teamA.name : "";
+        const nameB = setup.teamB && setup.teamB.name ? setup.teamB.name : "";
+        document.querySelectorAll('[data-bind="team-home-name"]').forEach(el => el.textContent = nameA);
+        document.querySelectorAll('[data-bind="team-away-name"]').forEach(el => el.textContent = nameB);
+      } catch (e) {}
     })();
   </script>
 

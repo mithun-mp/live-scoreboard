@@ -1,124 +1,67 @@
 /* timer.js
    ------------------------------------------------
-   High-precision match timer (UI-agnostic)
+   High-precision match timer renderer
    - Uses requestAnimationFrame
-   - Supports added time
-   - Fires milestones once per period
-   - Reads state, never mutates it
+   - Interpolates time based on state.timer (baseMs + delta)
 */
 
 const Timer = (function (Utils) {
 
-  /* -------- Helpers -------- */
-
-  function formatMs(ms) {
-    const total = Math.max(0, Math.floor(ms / 1000));
-    const m = Math.floor(total / 60);
-    const s = total % 60;
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-  }
-
-  /* -------- Renderer -------- */
-
-  function createRenderer({
-    getTimerState,
-    getRules,
-    onRender,
-    onMilestone
-  }) {
-    if (typeof getTimerState !== 'function')
-      throw new Error('Timer: getTimerState required');
-
-    if (typeof getRules !== 'function')
-      throw new Error('Timer: getRules required');
-
+  function createRenderer({ onRender }) {
     if (typeof onRender !== 'function')
       throw new Error('Timer: onRender required');
 
     let rafId = null;
-    let lastRenderTs = 0;
-    const firedMilestones = new Set();
+    let currentStateTimer = null;
 
-    function computeElapsed(timer, now) {
-      let elapsed = timer.elapsedMs || 0;
-
-      if (
-        timer.running &&
-        typeof timer.lastStartTs === 'number' &&
-        timer.lastStartTs <= now
-      ) {
-        elapsed += now - timer.lastStartTs;
-      }
-
-      return elapsed;
+    function computeElapsed() {
+      if (!currentStateTimer) return 0;
+      
+      const { running, startTs, baseMs } = currentStateTimer;
+      if (!running) return baseMs;
+      
+      const now = Date.now();
+      // If startTs is missing (shouldn't happen if running), fallback to baseMs
+      if (!startTs) return baseMs;
+      
+      return baseMs + (now - startTs);
     }
 
     function tick() {
-      const now = Utils.nowTs();
-      const timer = getTimerState();
-      const rules = getRules();
-
-      if (!timer || !rules) {
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
-
-      const elapsedMs = computeElapsed(timer, now);
-      const targetMs =
-        (rules.baseDurationMs || 0) + (rules.addedTimeMs || 0);
-
-      const milestoneKey = `${rules.period}:${targetMs}`;
-
-      if (
-        targetMs > 0 &&
-        elapsedMs >= targetMs &&
-        !firedMilestones.has(milestoneKey)
-      ) {
-        firedMilestones.add(milestoneKey);
-
-        if (typeof onMilestone === 'function') {
-          onMilestone({
-            period: rules.period,
-            elapsedMs,
-            targetMs
-          });
-        }
-      }
-
-      // ~30 FPS render throttle
-      if (now - lastRenderTs >= 33) {
-        lastRenderTs = now;
-        onRender(formatMs(elapsedMs), elapsedMs, targetMs);
-      }
-
+      const elapsedMs = computeElapsed();
+      onRender(elapsedMs);
       rafId = requestAnimationFrame(tick);
     }
 
-    function start() {
+    function start(timerState) {
+      currentStateTimer = timerState;
+      try { Utils.debug('timer:start', { running: timerState && timerState.running, baseMs: timerState && timerState.baseMs }); } catch {}
       if (!rafId) rafId = requestAnimationFrame(tick);
+    }
+
+    function updateState(timerState) {
+      currentStateTimer = timerState;
+      try { Utils.debug('timer:update', { running: timerState && timerState.running, baseMs: timerState && timerState.baseMs }); } catch {}
     }
 
     function stop() {
       if (rafId) {
         cancelAnimationFrame(rafId);
         rafId = null;
+        try { Utils.debug('timer:stop'); } catch {}
       }
-    }
-
-    function resetMilestones() {
-      firedMilestones.clear();
     }
 
     return {
       start,
-      stop,
-      resetMilestones
+      updateState,
+      stop
     };
   }
 
   return { createRenderer };
 
-})(Utils);
+})(window.Utils);
 
 /* Global export */
 try {

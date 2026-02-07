@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Match Setup – Live Soccer Scoreboard</title>
+  <title>Match Setup – Live Scoreboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="css/setup1.css">
@@ -28,14 +28,20 @@
         <h2>Team A</h2>
         <input type="text" id="teamAName" placeholder="Enter Team A Name" value="Team A">
         <input type="file" id="teamALogo" accept="image/*">
-        <img id="teamALogoPreview" class="logo-preview" alt="Team A Logo Preview">
+        <div class="logo-wrapper">
+            <img id="teamALogoPreview" class="logo-preview" alt="Team A Logo Preview">
+            <button class="btn-icon view-logo" id="viewLogoA">👁️</button>
+        </div>
       </div>
 
       <div class="team-card">
         <h2>Team B</h2>
         <input type="text" id="teamBName" placeholder="Enter Team B Name" value="Team B">
         <input type="file" id="teamBLogo" accept="image/*">
-        <img id="teamBLogoPreview" class="logo-preview" alt="Team B Logo Preview">
+        <div class="logo-wrapper">
+            <img id="teamBLogoPreview" class="logo-preview" alt="Team B Logo Preview">
+            <button class="btn-icon view-logo" id="viewLogoB">👁️</button>
+        </div>
       </div>
 
     </section>
@@ -57,6 +63,27 @@
 
   </main>
 
+  <!-- Info Button -->
+  <button id="infoBtn" class="info-btn">i</button>
+  
+  <!-- Info Modal -->
+  <div id="infoModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-modal" id="closeModal">&times;</button>
+      <div class="instructions-body">
+        <h2>Setup Instructions</h2>
+        <ul>
+            <li><strong>Team Setup:</strong> Enter names and upload logos for both teams.</li>
+            <li><strong>Match Duration:</strong> Set the total time in minutes (e.g., 90).</li>
+            <li><strong>Save Setup:</strong> Click to save configurations.</li>
+            <li><strong>Open Match Screen:</strong> Opens the public display window.</li>
+            <li><strong>Start Countdown:</strong> Begins the match sequence.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
   <script src="js/setup-ui.js"></script>
 </body>
 </html>

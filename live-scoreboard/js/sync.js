@@ -26,6 +26,7 @@ const Sync = (function (Utils) {
       if (seenIds.has(msg.id)) return;
 
       seenIds.add(msg.id);
+      try { Utils.debug('sync:incoming', { matchId, from: msg.originId, role: msg.role, type: msg.payload && msg.payload.type }); } catch {}
 
       listeners.forEach(fn => {
         try {
@@ -66,6 +67,7 @@ const Sync = (function (Utils) {
       seenIds.add(msg.id);
 
       if (bc) bc.postMessage(msg);
+      try { Utils.debug('sync:broadcast', { matchId, originId, role, type: payload && payload.type }); } catch {}
 
       try {
         localStorage.setItem(channelName, JSON.stringify(msg));

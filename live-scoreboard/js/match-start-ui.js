@@ -34,14 +34,16 @@
     const s = JSON.parse(raw);
     teamAName.textContent = s.teamA?.name || "";
     teamBName.textContent = s.teamB?.name || "";
+    try { Utils.debug('match-start:setup-loaded', { matchId, teamA: s.teamA?.name, teamB: s.teamB?.name }); } catch {}
     return true;
   }
 
   function loadLogos() {
-    const a = localStorage.getItem(`${matchId}:teamALogo`);
-    const b = localStorage.getItem(`${matchId}:teamBLogo`);
+    const a = localStorage.getItem(`${matchId}:homeLogo`);
+    const b = localStorage.getItem(`${matchId}:awayLogo`);
     if (a) teamAImg.src = a;
     if (b) teamBImg.src = b;
+    try { Utils.debug('match-start:logos-loaded', { hasA: Boolean(a), hasB: Boolean(b) }); } catch {}
   }
 
   /* ===== COUNTDOWN ===== */
@@ -58,6 +60,7 @@
     let t = 10;
     countdownEl.textContent = t;
     animate();
+    try { Utils.debug('match-start:countdown-start', { seconds: t }); } catch {}
 
     const timer = setInterval(() => {
       t--;
@@ -83,10 +86,12 @@
       loadLogos();
       matchText.textContent = "Teams are ready";
       setStage("ready");
+      try { Utils.debug('match-start:event:setup-updated'); } catch {}
     }
 
     if (e.data.type === "START_COUNTDOWN") {
       startCountdown();
+      try { Utils.debug('match-start:event:start-countdown'); } catch {}
     }
   });
 

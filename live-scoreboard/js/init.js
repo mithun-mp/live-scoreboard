@@ -62,10 +62,10 @@
     show(MODE.CONTROLLER);
 
     load('js/utils.js');
-    load('js/matchstate.js');
+    load('js/matchState.js');
     load('js/sync.js');
     load('js/timer.js');
-    load('controller-ui.js');
+    load('js/controller-ui.js');
   });
 
 })();

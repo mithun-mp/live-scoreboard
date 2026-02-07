@@ -74,12 +74,34 @@ const Utils = (function () {
     return Date.now();
   }
 
+  function formatMs(ms) {
+    const totalSec = Math.floor(ms / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  function debug(tag, data) {
+    try {
+      const ts = new Date().toISOString();
+      if (data !== undefined) {
+        console.log(`[DEBUG ${ts}] ${tag}`, data);
+      } else {
+        console.log(`[DEBUG ${ts}] ${tag}`);
+      }
+    } catch {
+      console.log('[DEBUG]', tag);
+    }
+  }
+
   return {
     uuid,
     isObject,
     deepClone,
     deepMerge,
-    nowTs
+    nowTs,
+    formatMs,
+    debug
   };
 })();
 
